@@ -10,10 +10,12 @@ A search engine to fine and store book titles
 | ------------- |:-------------:| 
 
 | JavaScript     | [https://developer.mozilla.org/en-US/docs/Web/JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)      |   
-| Git | [https://git-scm.com/](https://git-scm.com/)     |    
+| Git            |         [https://git-scm.com/](https://git-scm.com/)     |
+| MongoDB | [https://www.mongodb.com/](https://www.mongodb.com/)   | 
+| Express NPM package | [https://www.npmjs.com/package/express](https://www.npmjs.com/package/express) |   
 | Node.js | [https://nodejs.org/](https://nodejs.org/)     |
-| NPM | [https://www.npmjs.com](https://www.npmjs.com)   |
 | React | [https://react.dev/](https://react.dev/)   |
+| NPM | [https://www.npmjs.com](https://www.npmjs.com)   |
 
 ---
 
