@@ -6,13 +6,13 @@ const resolvers = {
         me: async (_, args, context) => {
             try {
                 console.log("Quiery meeee")
+                //get user._id from the jwt payload using the authMiddleware context which is passed into graphql server (line 24 of server.js). This retrieves the logged in user without searching the database
                 return User.findOne({_id: context.user._id});
                 
             } catch (error) {
-                
+                console.log("Error finding User: ", error)
             }
         },
-
     },
     Mutation: {
         createUser: async(_, args) => {
@@ -28,6 +28,21 @@ const resolvers = {
                 console.log("Error creating User: ", error)
             }
         },
+        login: async (parent, {email, password}) => {
+            const user = await User.findOne({ email});
+            
+            if (!user) {
+                throw AuthenticationError;
+            }
+
+            const correctPw = await user.isCorrectPassword(password);
+            if(!correctPw) {
+                throw AuthenticationError;
+            }
+
+            const token = signToken(user);
+            return { token, user };
+        },
         addBook: async(_, args, context) => {
             try {
                 console.log("Adding BOOk Mutation!")
@@ -37,10 +52,20 @@ const resolvers = {
                   { new: true, runValidators: true }
                 );
                 return updatedUser
-              } catch (err) {
-                console.log(err);
+              } catch (error) {
+                console.log("Error adding a book: ", error);
               }
-        }
+        }, 
+        removeBook: async(parent, { book }, context) => {
+            if (context.user) {
+                return User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { books: book } },
+                    { new: true }
+                );
+            }
+            throw AuthenticationError;
+        },
     }
 };
 
