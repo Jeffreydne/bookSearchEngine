@@ -2,13 +2,21 @@
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
-import { loginUser } from '../utils/API';
+// import { loginUser } from '../utils/API';
+import { useMutation } from '@apollo/client';
+import { LOGIN } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
+  // const { loading, data } = useQuery(LOGIN, {
+  //   fetchPolicy: "no-cache"
+  // });
+
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+
+  const [login, { error, data }] = useMutation(LOGIN)
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -26,7 +34,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await loginUser(userFormData);
+      const response = await LOGIN(userFormData);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
