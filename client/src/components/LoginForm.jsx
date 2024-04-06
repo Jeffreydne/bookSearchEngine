@@ -8,15 +8,12 @@ import { LOGIN } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
-  // const { loading, data } = useQuery(LOGIN, {
-  //   fetchPolicy: "no-cache"
-  // });
 
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  // const [login, { error, data }] = useMutation(LOGIN)
+  const [login, { error }] = useMutation(LOGIN)
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -34,17 +31,14 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await LOGIN(userFormData);
+      const { data } = await login({
+        variables: { ...userFormData }, });
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const { token, user } = await response.json();
-      console.log(user);
+      const { token } = await data.login;
+      console.log(data.login);
       Auth.login(token);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       setShowAlert(true);
     }
 
@@ -59,7 +53,7 @@ const LoginForm = () => {
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-          Something went wrong with your login credentials!
+          Something went wrong with your login credentials: {error}!
         </Alert>
         <Form.Group className='mb-3'>
           <Form.Label htmlFor='email'>Email</Form.Label>
