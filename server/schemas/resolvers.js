@@ -58,15 +58,22 @@ const resolvers = {
                 console.log("Error adding a book: ", error);
               }
         }, 
-        removeBook: async(parent, { book }, context) => {
-            if (context.user) {
-                return User.findOneAndUpdate(
-                    { _id: context.user._id },
-                    { $pull: { books: book } },
-                    { new: true }
-                );
+        removeBook: async(parent, { bookId }, context) => {
+            try{
+                if (context.user) {
+                    console.log("===================REMOVE BOOK")
+                    return User.findOneAndUpdate(
+                        { _id: context.user._id },
+                        { $pull: { savedBooks: {bookId} } },
+                        { new: true }
+                    );
+                }
+                throw AuthenticationError;
+
             }
-            throw AuthenticationError;
+            catch(error){
+                console.log("Error: ", error)
+            }
         },
     }
 };
