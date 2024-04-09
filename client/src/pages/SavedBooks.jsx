@@ -17,7 +17,6 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  // const [removeBook, { error, data }] = useMutation(REMOVE_BOOK);
   const {loading, error, data } = useQuery(QUERY_ME)
   console.log("Loading: ", loading)
   console.log("Error: ", error)
@@ -44,11 +43,7 @@ const SavedBooks = () => {
       });
       console.log('this is line 46')
       console.log(data);
-      // if (!response.ok) {
-      //   throw new Error('something went wrong!');
-      // }
-
-      // const updatedUser = await response.json();
+      
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
     } catch (err) {

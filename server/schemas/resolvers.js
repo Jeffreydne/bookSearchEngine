@@ -5,8 +5,6 @@ const resolvers = {
     Query: {
         me: async (_, args, context) => {
             try {
-                console.log("+++++++++++++++++++++++++++++++++++++++++++++")
-                console.log("Quiery meeee")
                 //get user._id from the jwt payload using the authMiddleware context which is passed into graphql server (line 24 of server.js). This retrieves the logged in user without searching the database
                 return User.findOne({_id: context.user._id});
                 
@@ -15,14 +13,12 @@ const resolvers = {
             }
         },
     },
+    // create mutations for fetch POST requests for SIgnup, login, add book, and remove book
     Mutation: {
+        
         createUser: async(_, args) => {
             try {
-                console.log("=============================")
-                console.log("Create User mutation!")
-                console.log(args)
                 const newUser = await User.create(args)
-                console.log(newUser)
                 const token = signToken(newUser)
                 return {user: newUser, token}
                 
@@ -47,7 +43,6 @@ const resolvers = {
         },
         addBook: async(_, args, context) => {
             try {
-                console.log("Adding BOOk Mutation!")
                 const updatedUser = await User.findOneAndUpdate(
                   { _id: context.user._id },
                   { $addToSet: { savedBooks: args } },
@@ -61,7 +56,6 @@ const resolvers = {
         removeBook: async(parent, { bookId }, context) => {
             try{
                 if (context.user) {
-                    console.log("===================REMOVE BOOK")
                     return User.findOneAndUpdate(
                         { _id: context.user._id },
                         { $pull: { savedBooks: {bookId} } },

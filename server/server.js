@@ -1,7 +1,9 @@
+// import express and ApolloServer, including express middleware for Apollo 
 const express = require('express');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
+// import authMiddleware from auth.js, the db connection & typeDefs & resolvers for server fetches
 const { authMiddleware } = require('./utils/auth');
 
 const { typeDefs, resolvers } = require('./schemas');
@@ -9,6 +11,7 @@ const db = require('./config/connection');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+// instantiate AApollo Server with typeDefs & resolvers objects as arguments
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -20,7 +23,7 @@ const startApolloServer = async () => {
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
-
+// use GraphQL API for data management
   app.use('/graphql', expressMiddleware(server, {
     context: authMiddleware
   }));
