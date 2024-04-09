@@ -1,6 +1,6 @@
 # bookSearchEngine
 
-A search engine to find and store book titles
+A search engine to find and store information about books that a user is interested in.
 
 ---
 
