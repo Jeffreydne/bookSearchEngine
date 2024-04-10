@@ -42,7 +42,7 @@ This application allows any user to search for books, and renders a display of m
 
 ## Instalation
 
-No installation needed. 
+If running localy you need to run npm install from the root folder, and npm run develop will allow you to have the GraphQL server running on one port at the same time as the client app is running on a different port. 
 
 ---
 
